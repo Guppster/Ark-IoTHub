@@ -1,37 +1,26 @@
-ENV['RACK_ENV'] = 'test'
+# frozen_string_literal: true
 
-require 'simplecov'
-SimpleCov.start
+ENV['RACK_ENV'] ||= 'test'
+
+require 'rack/test'
 require File.expand_path('../../config/environment', __FILE__)
-require 'rspec'
-require 'shoulda-matchers'
-require 'factory_girl'
-require 'database_cleaner'
 
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.library :active_record
-    with.test_framework :rspec
-  end
-end
+grape_starter_gem = Gem::Specification.find_by_name('grape-starter').gem_dir
+
+Dir[grape_starter_gem + '/lib/starter/rspec/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
-  #Shoulda-Matchers
-  config.include(Shoulda::Matchers::ActiveModel, type: :model)
-  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  config.color = true
+  config.formatter = :documentation
 
-  #Factory Girl
-  config.include(FactoryGirl::Syntax::Methods)
-  config.before(:suite) do
-    FactoryGirl.find_definitions
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
+  config.mock_with :rspec
+  config.expect_with :rspec
 
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
+  config.raise_errors_for_deprecations!
 end
 
+include Rack::Test::Methods
+
+def app
+  Api::Base
+end

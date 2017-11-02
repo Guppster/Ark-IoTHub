@@ -1,4 +1,6 @@
-## Introduction
+# ARK IoT Hub 
+
+## Description
 
 A RESTful API providing easy access to the ARK blockchain for IoT related operations
 
@@ -17,95 +19,78 @@ Since these hub devices will be universal and not store any state, you would be 
 
 The Hub will host an API with endpoints for each of these tasks because at the very least we can assume an IoT device can connect to the internet, create a JSON structure, and send an HTTP request. 
 
-The Hub will be build as a Grape API with ActiveRecord, RSpec and Swagger integration with a easy to deploy docker composition
+The Hub will be built as a [Grape](http://github.com/ruby-grape/grape) API mounted on [Rack](https://github.com/rack/rack).
+It also includes [grape-swagger](http://github.com/ruby-grape/grape-swagger) for documentation generating.
 
 ## Learn more about the Ark IoT-Architecture 
 http://gurpreetsingh.me/ProjectLedger/2017/10/16/ark-iot-infrastructure.html
 
-## Dependencies
 
-- Ruby 2.3.4
-- MySQL
+## Usage
 
-## Installation
+#### Setup
 
-- Clone poject
-- Run the script:
-
- ```shell
- $ bin/setup
- ```
-
-- Run bundler:
-
- ```shell
- $ bundle install
- ```
-
-- Create database and run migrations:
-
- ```shell
- $ bundle exec rake db:create db:migrate
- ```
-
-- Run application:
-
- ```shell
- $ rackup -p 3000
- ```
-
-## Docker
-
-To run application on docker:
-
-- Install Docker and Docker-Compose
-- Clone the project
-- Run these commands on project root:
-
-```shell
-$ docker-compose build
-$ docker-compose up
-
-# Open another terminal and run:
-$ docker-compose run web bundle exec rake db:create db:migrate
+```
+$ git clone [repo url]
+$ cd ArkIoT-Hub
+$ ./script/setup
 ```
 
-## Console
+#### Test
 
-To use console, run the following command:
-
-```shell
-$ bin/console
+```
+$ ./script/test
 ```
 
-## Tests
+#### Run
 
-To execute tests, run the following command:
+```
+$ ./script/server *port (default: 9292)
+```
+and go to: [http://localhost:port/doc](http://localhost:9292/doc)
+to access the OAPI documentation.
 
-```shell
-$ bundle exec rspec
+For production, set `RACK_ENV=production`
+```
+$ RACK_ENV=production ./script/server *port (default: 9292)
 ```
 
-## Routes
+#### Update
 
-To show the application routes, run the following command:
-
-```shell
-$ bundle exec rake routes
+… dependencies
+```
+$ ./script/update
 ```
 
-## Swagger Documentation
+#### Stop
 
-To access swagger documentation, enter the root application address in the browser:
-
-```shell
-http://localhost:3000
+… would only be used, if server started in production mode
 ```
+$ ./script/stop
+```
+
+## Rake Tasks
+
+#### List Routes
+
+```
+rake routes
+```
+
+#### OpenApi Documentation and Validation
+
+```
+rake oapi:fetch
+rake oapi:validate
+```
+comming from: [`grape-swagger` Rake Tasks](https://github.com/ruby-grape/grape-swagger#rake-tasks)
+
 
 ## Contributing
 
-Please read the CONTRIBUTING.md
+Bug reports and pull requests are welcome on GitHub at https://github.com/Guppster/Ark-IoTHub
+
 
 ## License
 
-The software is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](LICENSE).

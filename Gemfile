@@ -1,29 +1,23 @@
-source 'https://rubygems.org'
-ruby '2.3.4'
+# frozen_string_literal: true
 
-gem 'rack', '~> 2.0.1'
-gem 'grape', '~> 0.17.0'
-gem 'grape-entity', '~> 0.5.1'
-gem 'grape-swagger', '~> 0.25.0'
-gem 'mysql2', '~> 0.4.4'
-gem 'activerecord', '~> 4.2.7', require: 'active_record'
-gem 'require_all', '~> 1.3.3'
+source 'http://rubygems.org'
+
+gem 'thin'
+
+gem 'rack'
+gem 'rack-cors'
+
+# FIXME: lock to specific version before you are going into production
+gem 'grape', git: 'git@github.com:ruby-grape/grape.git'
+gem 'grape-entity', git: 'git@github.com:ruby-grape/grape-entity.git'
+gem 'grape-swagger', git: 'git@github.com:ruby-grape/grape-swagger.git'
+gem 'grape-swagger-entity', git: 'git@github.com:ruby-grape/grape-swagger-entity.git'
 
 group :development, :test do
-  gem 'pry-byebug'
-end
-
-group :development do
-  gem 'rake'
-  gem 'thin'
-end
-
-group :test do
-  gem 'rspec'
+  gem 'grape-starter', git: 'git@github.com:LeFnord/grape-starter.git'
+  gem 'pry'
   gem 'rack-test'
-  gem 'factory_girl'
-  gem 'shoulda-matchers'
-  gem 'database_cleaner'
-  gem 'simplecov', require: false
+  gem 'rake'
+  gem 'rspec'
+  gem 'rubocop'
 end
-

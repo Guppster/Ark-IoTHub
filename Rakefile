@@ -1,28 +1,28 @@
- require 'rubygems'
- require 'bundler'
+# frozen_string_literal: true
 
- begin
-   Bundler.setup(:default, :development)
- rescue Bundler::BundlerError => e
-   $stderr.puts e.message
-   $stderr.puts 'Run `bundle install` to install missing gems'
-   exit e.status_code
- end
+require 'rake'
 
- task :environment do
-   ENV['RACK_ENV'] ||= 'development'
-   require File.expand_path('../config/environment', __FILE__)
- end
+require File.expand_path('../config/environment', __FILE__)
 
- desc "API Routes"
- task routes: :environment do
-   API::Base.routes.each do |api|
-     method = api.request_method.ljust(10)
-     path   = api.path
-     puts "     #{method} #{path}"
-   end
- end
+task :environment do
+  ENV['RACK_ENV'] ||= 'development'
+end
 
- #Load tasks
- Dir.glob('lib/tasks/*.rake').each { |task| load task }
+# rspec tasks
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
 
+# rubocop tasks
+require 'rubocop/rake_task'
+RuboCop::RakeTask.new(:rubocop)
+
+task default: [:spec, :rubocop]
+
+
+# grape-swagger tasks
+require 'grape-swagger/rake/oapi_tasks'
+GrapeSwagger::Rake::OapiTasks.new(::Api::Base)
+
+require 'starter/rake/grape_tasks'
+Starter::Rake::GrapeTasks.new(::Api::Base)

@@ -1,12 +1,15 @@
-require File.expand_path('../config/environment', __FILE__)
-use ActiveRecord::ConnectionAdapters::ConnectionManagement
-use Rack::ConditionalGet
-use Rack::ETag
+# frozen_string_literal: false
 
-use Rack::Static,
-  root: File.expand_path('../swagger-ui', __FILE__),
-  urls: ["/css","/fonts","/images","/lang","/lib"],
-  index: 'index.html'
+require 'rack/cors'
+require_relative 'config/environment'
 
-run API::Base
+use Rack::CommonLogger
 
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', headers: :any, methods: %i[get post put patch delete options]
+  end
+end
+
+run App.new
