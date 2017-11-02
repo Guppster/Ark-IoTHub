@@ -6,6 +6,7 @@ gem 'thin'
 
 gem 'rack'
 gem 'rack-cors'
+gem 'ark-ruby'
 
 # FIXME: lock to specific version before you are going into production
 gem 'grape', git: 'git@github.com:ruby-grape/grape.git'
