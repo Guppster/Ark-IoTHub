@@ -8,15 +8,31 @@ class TransactionController(private var moduleController: ModuleController)
 {
     fun getLatest(context: Context)
     {
-
+        //Queries the
     }
 
     fun sendMessage(context: Context)
     {
+
+        /*
+        Requires:
+            Recipient Address
+            Vendor Field Message
+            Module Address
+         */
+
         var peer =  Network.getDevnet().randomPeer
 
-        var transaction = Transaction.createTransaction("recipient address extracted from context",1, "Some message we extract from context", moduleController.getPassphrase("Address extracted from context"))
+        var transaction = constructMessage("test", "test", "test")
 
         var result = peer.postTransaction(transaction)
+    }
+
+    fun constructMessage(moduleAddress: String, recipientAddress: String, vendorField: String) : Transaction
+    {
+        return Transaction.createTransaction(recipientAddress,
+                1,
+                vendorField,
+                moduleController.getPassphrase(moduleAddress))
     }
 }

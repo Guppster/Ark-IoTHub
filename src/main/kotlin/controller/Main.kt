@@ -17,6 +17,9 @@ fun main(args: Array<String>)
         port(PORT)
     }.start()
 
+    val moduleController = ModuleController
+    val transactionController = TransactionController(moduleController)
+
     //The root path
     app.routes{
 
@@ -27,8 +30,9 @@ fun main(args: Array<String>)
 
         path("message")
         {
-            get(TransactionController::getLatest)
-            post(TransactionController::sendMessage)
+            get(transactionController::getLatest)
+            post(transactionController::sendMessage)
         }
     }
 }
+
