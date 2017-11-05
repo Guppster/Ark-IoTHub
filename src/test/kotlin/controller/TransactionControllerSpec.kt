@@ -12,7 +12,7 @@ object TransactionControllerSpec : Spek(
 {
     describe("transaction controller")
     {
-        val controller = TransactionController(ModuleController)
+        val controller = TransactionController(ModuleController())
 
         on("construct message")
         {

@@ -17,7 +17,7 @@ fun main(args: Array<String>)
         port(PORT)
     }.start()
 
-    val moduleController = ModuleController
+    val moduleController = ModuleController()
     val transactionController = TransactionController(moduleController)
 
     //The root path
@@ -25,7 +25,7 @@ fun main(args: Array<String>)
 
         path("")
         {
-            post(ModuleController::register)
+            post(moduleController::register)
         }
 
         path("message")
